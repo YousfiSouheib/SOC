@@ -1,4 +1,6 @@
 # Comment installer Wazuh sur un environnement Debian. 
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl apt-transport-https gnupg -y
 ### Server
 #!/usr/bin/bash
 curl -sO https://packages.wazuh.com/4.11/wazuh-install.sh
