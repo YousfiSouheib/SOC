@@ -1,0 +1,22 @@
+#Comment supprimer Wazuh de votre machine 
+#Vérifier l'exitance des services : 
+sudo systemctl list-units | grep wazuh
+#Puis arrêter les services : 
+sudo systemctl stop wazuh-dashboard
+sudo systemctl stop wazuh-indexer
+sudo systemctl stop wazuh-agent
+#Supprimer les paquets : 
+sudo apt remove --purge wazuh-agent -y
+#Les autres composants (dashbord, indexer, ...) ne sont pas gérés par APT. Il faut les supprimer comme suit : 
+sudo rm -rf /var/ossec
+sudo rm -rf /var/lib/wazuh*
+sudo rm -rf /etc/wazuh*
+sudo rm -rf /etc/systemd/system/wazuh*
+sudo rm -rf /usr/share/wazuh*
+sudo rm -rf /var/log/wazuh*
+sudo rm -rf /opt/wazuh-install-files
+#Supprimer les services systemd manuellement comme suit : 
+sudo systemctl disable wazuh-dashboard
+sudo systemctl disable wazuh-indexer
+sudo systemctl daemon-reload
+
