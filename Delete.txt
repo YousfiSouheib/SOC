@@ -7,7 +7,7 @@ sudo systemctl stop wazuh-indexer
 sudo systemctl stop wazuh-agent
 #Supprimer les paquets : 
 sudo apt remove --purge wazuh-agent -y
-#Les autres composants (dashbord, indexer, ...) ne sont pas gérés par APT. Il faut les supprimer comme suit : 
+#Les autres composants (dashbord, indexer, ...) ne sont pas gérés par APT. Il faut les supprimer comme suit (ça dépend dans quel stade d'installation vous êtes) : 
 sudo rm -rf /var/ossec
 sudo rm -rf /var/lib/wazuh*
 sudo rm -rf /etc/wazuh*
@@ -15,8 +15,22 @@ sudo rm -rf /etc/systemd/system/wazuh*
 sudo rm -rf /usr/share/wazuh*
 sudo rm -rf /var/log/wazuh*
 sudo rm -rf /opt/wazuh-install-files
+sudo rm -rf /etc/filebeat
+sudo rm -rf /etc/elasticsearch
+sudo rm -rf /etc/kibana
+sudo rm -rf /usr/share/filebeat
+sudo rm -rf /usr/share/kibana
+sudo rm -rf /usr/share/elasticsearch
+sudo rm -rf /var/lib/elasticsearch
+sudo rm -rf /var/log/elasticsearch
+sudo rm -rf /var/log/kibana
+sudo rm -rf /var/log/filebeat
 #Supprimer les services systemd manuellement comme suit : 
 sudo systemctl disable wazuh-dashboard
 sudo systemctl disable wazuh-indexer
 sudo systemctl daemon-reload
-
+#Supprimer les dépôts APT : 
+sudo rm -f /etc/apt/sources.list.d/wazuh*.list
+sudo rm -f /etc/apt/sources.list.d/elastic*.list
+sudo apt update
+Une fois tout cela fait, vous pouvez recommencer l'installation proprement :) 
