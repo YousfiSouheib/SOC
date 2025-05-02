@@ -1,4 +1,4 @@
-# SOC
+# Comment installer Wazuh sur un environnement Debian. 
 ### Server
 #!/usr/bin/bash
 curl -sO https://packages.wazuh.com/4.11/wazuh-install.sh
