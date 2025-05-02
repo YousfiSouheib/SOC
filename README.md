@@ -1,0 +1,57 @@
+# SOC
+### Server
+#!/usr/bin/bash
+curl -sO https://packages.wazuh.com/4.11/wazuh-install.sh
+curl -sO https://packages.wazuh.com/4.11/config.yml
+echo '
+nodes:
+  # Wazuh indexer nodes
+  indexer:
+    - name: ubuntu01
+      ip: "192.168.0.1"
+
+  server:
+    - name: ubuntu01
+      ip: "192.168.0.1"
+
+  # Wazuh dashboard nodes
+  dashboard:
+    - name: ubuntu01
+      ip: "192.168.0.1"
+'> config.yml 
+
+bash wazuh-install.sh --generate-config-files
+
+curl -sO https://packages.wazuh.com/4.11/wazuh-install.sh
+
+bash wazuh-install.sh --wazuh-indexer ubuntu01
+
+bash wazuh-install.sh --start-cluster
+
+tar -axf wazuh-install-files.tar wazuh-install-files/wazuh-passwords.txt -O | grep -P "\'admin\'" -A 1
+
+bash wazuh-install.sh --wazuh-server ubuntu01
+
+bash wazuh-install.sh --wazuh-dashboard ubuntu01
+
+Pour la vérif : 
+Netstat -ntaup 
+
+Puis, jeter un coup d’œil sur /etc/wazuh-indexer/opensearch.yml
+
+
+
+### Agent
+
+curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | gpg --no-default-keyring --keyring gnupg-ring:/usr/share/keyrings/wazuh.gpg --import && chmod 644 /usr/share/keyrings/wazuh.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" | tee -a /etc/apt/sources.list.d/wazuh.list
+
+apt-get update
+
+WAZUH_MANAGER="192.168.0.1" apt-get install wazuh-agent
+
+systemctl daemon-reload
+systemctl enable wazuh-agent
+systemctl start wazuh-agent
+
